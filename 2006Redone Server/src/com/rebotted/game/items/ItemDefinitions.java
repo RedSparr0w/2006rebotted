@@ -1,8 +1,7 @@
 package com.rebotted.game.items;
 
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
 
 public class ItemDefinitions {
 
@@ -54,6 +53,38 @@ public class ItemDefinitions {
 				}
 				definitions[j].getValues(in);
 			}
+			BufferedWriter writer = new BufferedWriter(new FileWriter("./data/data/itemdef.tsv"));
+
+			writer.write("ID");
+			writer.write("\tName");
+			writer.write("\tDescription");
+			writer.write("\tShop Value");
+			writer.write("\tLow Alch");
+			writer.write("\tHigh Alch");
+			writer.write("\tStackable");
+			writer.write("\tNoteable");
+			writer.write("\tWeight");
+			writer.write("\tAttack Stab\tAttack Slash\tAttack Crush\tAttack Magic\tAttack Range\tDefence Stab\tDefence Slash\tDefence Crush\tDefence Magic\tDefence Range");
+
+			writer.newLine();
+			for(int j = 0; j < 7956; j++) {
+
+				writer.write("" + j);
+				ItemDefinitions item = definitions[j];
+				writer.write("\t" + definitions[j].name);
+				writer.write("\t" + definitions[j].itemDescription);
+				writer.write("\t" + definitions[j].shopValue);
+				writer.write("\t" + definitions[j].lowAlch);
+				writer.write("\t" + definitions[j].highAlch);
+				writer.write("\t" + definitions[j].isStackable);
+				writer.write("\t" + definitions[j].isNoteable);
+				writer.write("\t" + definitions[j].weight);
+				String[] sarr = Arrays.stream(definitions[j].bonuses).mapToObj(String::valueOf).toArray(String[]::new);
+				writer.write("\t" + String.join("\t", sarr));
+				writer.newLine();
+
+			}
+			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
